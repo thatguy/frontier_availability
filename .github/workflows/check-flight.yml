@@ -1,0 +1,30 @@
+name: Check flight availability
+
+on:
+  schedule:
+    # Twice per day (UTC): 09:00 and 21:00.
+    - cron: "0 9,21 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # No npm install needed: the script uses Node's built-in fetch only.
+      # The job passes/fails based on the thresholds. To get an email on every
+      # run (not just failures), set GitHub Notifications -> Actions to notify
+      # for all workflow runs. Open a run to see the PASS/FAIL summary with the
+      # seat and GoWild numbers.
+      - name: Run availability check
+        env:
+          MIN_SEATS: 40
+          MIN_GOWILD: 10
+        run: node run.js --ci
