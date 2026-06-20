@@ -1,9 +1,9 @@
 name: Check flight availability
 
 on:
-  schedule:
+  # schedule:
     # Twice per day (UTC): 09:00 and 21:00.
-    - cron: "0 9,21 * * *"
+    # - cron: "0 9,21 * * *"
   workflow_dispatch: {}
 
 jobs:
